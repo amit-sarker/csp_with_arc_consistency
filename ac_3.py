@@ -16,11 +16,22 @@ def revise(domains, arc, constraints):
             constraint_results = (_call_constraint({x: x_value, y: y_value},
                                                    neighbors, constraint)
                                   for y_value in domains[str(y)])
-
             if not any(constraint_results):
                 domains[str(x)].remove(x_value)
                 modified = True
     return modified
+
+
+def all_arcs_v2(constraints):
+    arcs = set()
+    temp = {}
+    for neighbors, constraint in constraints:
+        if len(neighbors) == 2:
+            x, y = neighbors
+            temp.update({(x, y): constraint})
+            temp.update({(y, x): constraint})
+            list(map(arcs.add, ((x, y), (y, x))))
+    return arcs, temp
 
 
 def all_arcs(constraints):
@@ -37,11 +48,8 @@ def all_arcs(constraints):
 def arc_consistency_3(domains, constraints):
     arcs = list(all_arcs(constraints))
     x = arcs[2][0]
-    #print("pp   ", x)
-    #print("qq   ", arcs[2][1])
     print(arcs)
     pending_arcs = set(arcs)
-    #print(pending_arcs)
 
     while pending_arcs:
         x, y = pending_arcs.pop()
@@ -60,7 +68,6 @@ def arc_consistency_1(domains, constraints):
         for arc in arcs:
             x = arc[0]
             y = arc[1]
-            #print("x  ", x, "  y  ", y)
             isChanged = revise(domains, (x, y), constraints)
             if len(domains[str(x)]) == 0:
                 return False

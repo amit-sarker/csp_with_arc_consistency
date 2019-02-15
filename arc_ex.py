@@ -1,11 +1,16 @@
 from random import randint
+import random
 
 import math
+
+import copy
 import networkx as nx
 #import matplotlib.pyplot as plt
 import sys
 
 from ac_3 import arc_consistency_3, arc_consistency_1
+from ac_4 import arc_consistency_4
+from ac_4_new import arc_consistency_4v2
 from csp import CspProblem
 
 
@@ -16,12 +21,13 @@ def gcd(a, b):
 
 
 def random_domain():
-    domain_size = 3
-    var_domain = []
-    for i in range(domain_size):
-        val = randint(-50, 50)
-        var_domain.append(val)
-    return var_domain
+    domain_size = 5
+    return random.sample(range(1, 30), domain_size)
+    # for i in range(domain_size):
+    #     random.sample(range(-50, 50), domain_size)
+    #     val = randint(-50, 50)
+    #     var_domain.append(val)
+    # return var_domain
 
 
 def const_different(variables, values):
@@ -134,7 +140,7 @@ def main():
     total_nodes = randint(2, 100)
     #total_edges = randint(total_nodes - 1, 100)
     #G = nx.gnm_random_graph(total_nodes, total_edges)
-    G = nx.erdos_renyi_graph(3, 1)
+    G = nx.erdos_renyi_graph(5, .75)
     # for v in nx.nodes(G):
     #     print('%s %d %f' % (v, nx.degree(G, v), nx.clustering(G, v)))
 
@@ -159,15 +165,18 @@ def main():
 
 
     for i in nx.edges(G):
-        #print(i)
         rand_number = randint(1, 10)
         constraints.append(def_constraints(i, rand_number))
 
     #problem = CspProblem(variables, domains, constraints)
-    domain1 = domain2 = domain3 = domains
+    #domain1 = domain2 = domain3 = domains
+    domain1 = copy.deepcopy(domains)
+    domain2 = copy.deepcopy(domains)
+    domain3 = copy.deepcopy(domains)
+    domain4 = copy.deepcopy(domains)
 
     print('\n')
-    #print(constraints)
+    print(constraints)
     print("Before AC1   ", domain1)
     #arc_consistency_3(problem.domains, problem.constraints)
     isConsistent = arc_consistency_1(domain1, constraints)
@@ -182,5 +191,10 @@ def main():
     print("After AC3   ", domain3)
     print("Status:   ", isConsistent)
 
+    print('\n')
+
+    print("Before AC4   ", domain4)
+    arc_consistency_4v2(domain4, constraints)
+    print("After AC4   ", domain4)
 
 main()
