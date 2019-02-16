@@ -11,6 +11,3 @@ def arc_consistency_3(domains, constraints):
                 return False
             pending_arcs = pending_arcs.union((x2, y2) for x2, y2 in arcs if y2 == x)
     return True
-
-
-

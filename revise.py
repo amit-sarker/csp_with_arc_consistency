@@ -40,7 +40,6 @@ def revise_v2(domains, edge, constraints):
     x, y = edge
     p = []
     q = []
-
     for con in constraints:
         arc, a_con = con
         if edge == arc:

@@ -29,7 +29,7 @@ def remove_domain(domains, vi, ai):
     return domains
 
 
-def arc_consistency_4v2(domains, constraints):
+def arc_consistency_4(domains, constraints):
     val_queue = deque()
     support, counter = init_all(domains, constraints)
     arcs, temp = list(all_arcs_v2(constraints))
