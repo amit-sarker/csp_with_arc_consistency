@@ -12,6 +12,7 @@ def init_all(domains, constraints):
 
     c = {}
     arcs = list(all_arcs(constraints))
+    print(arcs)
     for an_arc in arcs:
         x, y = an_arc
         x = str(x)
@@ -38,23 +39,26 @@ def arc_consistency_4(domains, constraints):
         arc_const = temp.get(an_arc, None)
         x = str(x)
         y = str(y)
-        dom_list_x = domains.get(x, None)
-        dom_list_y = domains.get(y, None)
-        for x_value in dom_list_x:
+        p = []
+        q = []
+        for x_va in domains[x]:
+            p.append(x_va)
+        for y_va in domains[y]:
+            q.append(y_va)
+        for x_value in p:
             support_list = []
-            for y_value in dom_list_y:
+            for y_value in q:
                 if arc_const([], [x_value, y_value]):
                     cnt = counter.get((x, x_value, y), None)
                     cnt += 1
                     counter.update({(x, x_value, y): cnt})
                     support_list.append((y, y_value))
             support.update({(x, x_value): support_list})
-
             chk_val = counter.get((x, x_value, y), None)
             if chk_val == 0:
                 val_queue.append((x, x_value))
                 remove_domain(domains, x, x_value)
-                if len(domains[str(x)]) == 0:
+                if len(domains[x]) == 0:
                     return False
 
     while not val_queue.__len__() == 0:

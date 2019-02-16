@@ -19,11 +19,11 @@ def const_one_odd_one_even(variables, values):
 
 
 def const_smaller(variables, values):
-    return values[0] < values[1]
+    return values[0] <= values[1]
 
 
 def const_bigger(variables, values):
-    return values[0] > values[1]
+    return values[0] >= values[1]
 
 
 def const_squared_val(variables, values):
