@@ -28,7 +28,7 @@ def construct_graph():
 
     for i in variables:
         domains.update({i: random_domain()})
-    print(domains)
+    print("Domains: ", domains)
 
     constraints = []
     for i in nx.edges(graph):
@@ -38,7 +38,7 @@ def construct_graph():
         const, opposite = def_constraints(i, rand_number)
         constraints.append(const)
         constraints.append(((n, m), opposite))
-    print(constraints)
+    print("Constraints: ", constraints)
     domain1 = copy.deepcopy(domains)
     domain2 = copy.deepcopy(domains)
     domain3 = copy.deepcopy(domains)

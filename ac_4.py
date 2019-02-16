@@ -12,7 +12,6 @@ def init_all(domains, constraints):
 
     c = {}
     arcs = list(all_arcs(constraints))
-    print(arcs)
     for an_arc in arcs:
         x, y = an_arc
         x = str(x)
