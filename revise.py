@@ -6,15 +6,10 @@ def all_arcs_v2(constraints):
     arcs = set()
     temp = {}
     for neighbors, constraint in constraints:
-        # print("nei:   ", neighbors)
-        # print("const  ", constraint)
         if len(neighbors) == 2:
             x, y = neighbors
             temp.update({(x, y): constraint})
-            #temp.update({(y, x): constraint})
             list(map(arcs.add, ((x, y), (y, x))))
-    # print("new_arcs:   ", arcs)
-    # print("temp:   ", temp)
     return arcs, temp
 
 
