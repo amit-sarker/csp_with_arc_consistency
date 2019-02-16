@@ -1,120 +1,75 @@
-import queue
+from collections import deque
 
-y_val = []
-
-
-def _call_constraint(assignment, neighbors, constraint):
-    variables, values = zip(*[(n, assignment[n])
-                              for n in neighbors])
-    if constraint(variables, values):
-        y_val.append(values[1])
-    return constraint(variables, values), y_val
+from revise import all_arcs, all_arcs_v2
 
 
-def calculate_support(pair, domains, constraints):
-    arc = []
-    supported_list = []
-
-    pair = list(pair)
-    for const in constraints:
-        x, y = const[0]
-        if x == int(pair[0]) or y == int(pair[0]):
-            arc.append(const[0])
-
-    for a in arc:
-        x, y = a
-        related_constraints = [(neighbors, constraint)
-                               for neighbors, constraint in constraints
-                               if set(a) == set(neighbors)]
-
-        for neighbors, constraint in related_constraints:
-            for y_value in domains[str(y)]:
-                tup = []
-                val = [pair[1], y_value]
-                if constraint([], val):
-                    tup.append(str(y))
-                    tup.append(val[1])
-                    tup = tuple(tup)
-                    supported_list.append(tup)
-    return supported_list
-
-
-def update_counter(variables, domains, counter, constraints, s):
-    temp = []
-    support_tuple = []
-    arc = []
-    cnt = 0
+def init_all(domains, constraints):
+    s = {}
     for key, val in domains.items():
-        for const in constraints:
-            x, y = const[0]
-            if x == int(key):
-                arc.append(y)
-            if y == int(key):
-                arc.append(x)
-        for i in val:
-            for j in arc:
-                temp.append(key)
-                support_tuple.append(key)
-                temp.append(i)
-                support_tuple.append(i)
-                temp.append(j)
-                temp = tuple(temp)
-                support_tuple = tuple(support_tuple)
-                support_list = s.get(support_tuple, None)
+        for i in range(len(val)):
+            pair = (key, val[i])
+            s.update({pair: []})
 
-                if support_list:
-                    for elem in support_list:
-                        x1, y1 = elem
-                        if int(x1) == int(j):
-                            cnt += 1
-                else:
-                    cnt = 0
-                counter.update({temp: cnt})
-                cnt = 0
-                temp = []
-                support_tuple = []
-    return counter
+    c = {}
+    arcs = list(all_arcs(constraints))
+    for an_arc in arcs:
+        x, y = an_arc
+        x = str(x)
+        y = str(y)
+        dom_list = domains.get(x, None)
+        for value in dom_list:
+            counter_pair = (x, value, y)
+            c.update({counter_pair: 0})
+    return s, c
 
 
 def remove_domain(domains, vi, ai):
-    print("llll    ", ai)
     if ai in domains[str(vi)]:
         domains[str(vi)].remove(int(ai))
-        print("dddd   ", domains)
     return domains
 
 
-def arc_consistency_4(variables, domains, constraints):
-    q = queue.Queue(500)
-    s = {}
-    pair = []
-    counter = {}
-    M = []
-    for key, val in domains.items():
-        for i in range(len(val)):
-            pair.append(key)
-            pair.append(val[i])
-            pair = tuple(pair)
-            supported_list = calculate_support(pair, domains, constraints)
-            s.update({pair: supported_list})
-            counter = update_counter(variables, domains, counter, constraints, s)
-            pair = []
+def arc_consistency_4v2(domains, constraints):
+    val_queue = deque()
+    support, counter = init_all(domains, constraints)
+    arcs, temp = list(all_arcs_v2(constraints))
+    for an_arc in arcs:
+        x, y = an_arc
+        arc_const = temp.get(an_arc, None)
+        x = str(x)
+        y = str(y)
+        dom_list_x = domains.get(x, None)
+        dom_list_y = domains.get(y, None)
+        for x_value in dom_list_x:
+            support_list = []
+            for y_value in dom_list_y:
+                if arc_const([], [x_value, y_value]):
+                    cnt = counter.get((x, x_value, y), None)
+                    cnt += 1
+                    counter.update({(x, x_value, y): cnt})
+                    support_list.append((y, y_value))
+            support.update({(x, x_value): support_list})
 
-        for k, v in counter.items():
-            if v == 0:
-                vi,ai,vj = k
-                l = [vi,ai]
-                l = tuple(l)
-                #print(l)
-                q.put(l)
-                #domains = remove_domain(domains, vi, ai)
+            chk_val = counter.get((x, x_value, y), None)
+            if chk_val == 0:
+                val_queue.append((x, x_value))
+                remove_domain(domains, x, x_value)
+                if len(domains[str(x)]) == 0:
+                    return False
 
+    while not val_queue.__len__() == 0:
+        vj, aj = val_queue.popleft()
+        sup_list = support.get((vj, aj), None)
+        for val in sup_list:
+            vi, ai = val
+            if ai in domains[str(vi)]:
+                cnt = counter.get((vi, ai, vj), None)
+                cnt -= 1
+                counter.update({(vi, ai, vj): cnt})
+                if counter.get((vi, ai, vj), None) == 0:
+                    val_queue.append((vi, ai))
+                    remove_domain(domains, vi, ai)
+                    if len(domains[str(vi)]) == 0:
+                        return False
 
-    while not q.empty():
-        var = q.get()
-        M.append(var)
-        # for k1,v1 in s.items():
-
-    print("Support List  ", s)
-    print("Counter   ", counter)
-    print("domains   ", domains)
+    return True
