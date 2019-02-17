@@ -8,14 +8,12 @@ import networkx as nx
 from constraints import def_constraints
 
 
-def random_domain():
-    domain_size = 5
+def random_domain(domain_size):
     return random.sample(range(-50, 50), domain_size)
 
 
-def construct_graph():
-    total_nodes = 3
-    graph = nx.erdos_renyi_graph(total_nodes, 1)
+def construct_graph(total_nodes, edge_probability, domain_size):
+    graph = nx.erdos_renyi_graph(total_nodes, edge_probability)
     #nx.draw(graph, with_labels=True)
     #plt.show()
 
@@ -27,7 +25,7 @@ def construct_graph():
     variables = tuple(variables)
 
     for i in variables:
-        domains.update({i: random_domain()})
+        domains.update({i: random_domain(domain_size)})
     print("Domains: ", domains)
 
     constraints = []
@@ -44,4 +42,4 @@ def construct_graph():
     domain3 = copy.deepcopy(domains)
     domain4 = copy.deepcopy(domains)
 
-    return domain1, domain2, domain3, domain4, constraints, total_nodes
+    return domain1, domain2, domain3, domain4, constraints
