@@ -34,30 +34,30 @@ def arc_consistency_4(domains, constraints):
     support, counter = init_all(domains, constraints)
     arcs, temp = list(all_arcs_v2(constraints))
     for an_arc in arcs:
-        x, y = an_arc
+        vi, vj = an_arc
         arc_const = temp.get(an_arc, None)
-        x = str(x)
-        y = str(y)
-        p = []
-        q = []
-        for x_va in domains[x]:
-            p.append(x_va)
-        for y_va in domains[y]:
-            q.append(y_va)
-        for x_value in p:
-            support_list = []
-            for y_value in q:
-                if arc_const([], [x_value, y_value]):
-                    cnt = counter.get((x, x_value, y), None)
+        vi = str(vi)
+        vj = str(vj)
+        di = []
+        dj = []
+        for x_va in domains[vi]:
+            di.append(x_va)
+        for y_va in domains[vj]:
+            dj.append(y_va)
+        for ai in di:
+            for aj in dj:
+                if arc_const([], [ai, aj]):
+                    cnt = counter.get((vi, ai, vj), None)
                     cnt += 1
-                    counter.update({(x, x_value, y): cnt})
-                    support_list.append((y, y_value))
-            support.update({(x, x_value): support_list})
-            chk_val = counter.get((x, x_value, y), None)
+                    counter.update({(vi, ai, vj): cnt})
+                    support_list = support.get((vj, aj), None)
+                    support_list.append((vi, ai))
+                    support.update({(vj, aj): support_list})
+            chk_val = counter.get((vi, ai, vj), None)
             if chk_val == 0:
-                val_queue.append((x, x_value))
-                remove_domain(domains, x, x_value)
-                if len(domains[x]) == 0:
+                val_queue.append((vi, ai))
+                remove_domain(domains, vi, ai)
+                if len(domains[vi]) == 0:
                     return False
 
     while not val_queue.__len__() == 0:

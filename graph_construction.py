@@ -9,7 +9,8 @@ from constraints import def_constraints
 
 
 def random_domain(domain_size):
-    return random.sample(range(-50, 50), domain_size)
+    #rand_number = randint(10, domain_size)
+    return random.sample(range(1, 1000), domain_size)
 
 
 def construct_graph(total_nodes, edge_probability, domain_size):

@@ -49,5 +49,13 @@ def get_result(domain_ac1, domain_ac2, domain_ac3, domain_ac4, constraints, tota
     end_ac4 = time.time()
     elapsed_ac4 = (end_ac4 - start_ac4) * 1000
     print("Elapsed time:   ", elapsed_ac4)
+    is_same = False
 
-    return elapsed_ac1, elapsed_ac2, elapsed_ac3, elapsed_ac4
+    consistent = False
+
+    if domain_ac3 == domain_ac1 == domain_ac2 == domain_ac4:
+        is_same = True
+    if is_consistent_ac1 and is_consistent_ac2 and is_consistent_ac3 and is_consistent_ac4:
+        consistent = True
+
+    return elapsed_ac1, elapsed_ac2, elapsed_ac3, elapsed_ac4, is_same, consistent

@@ -1,9 +1,10 @@
-from comparison import comp_by_nodes_time_domain, comp_by_edges_time_domain
+from comparison import comp_by_nodes_time_domain, comp_by_edges_time_domain, single_run
 
 
 def main():
-    comp_by_nodes_time_domain()
-    comp_by_edges_time_domain()
+    single_run()
+    #comp_by_nodes_time_domain()
+    #comp_by_edges_time_domain()
 
 
 if __name__ == '__main__':
