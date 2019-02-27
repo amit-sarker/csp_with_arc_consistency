@@ -4,6 +4,16 @@ from result import get_result
 
 
 def single_run():
+    total_nodes = 5
+    edge_probability = .5
+    domain_size = 30
+    domain_ac1, domain_ac2, domain_ac3, domain_ac4, constraints = construct_graph(total_nodes, edge_probability,
+                                                                                  domain_size)
+    time_ac1, time_ac2, time_ac3, time_ac4, is_same, is_const = get_result(domain_ac1, domain_ac2, domain_ac3,
+                                                                           domain_ac4, constraints, total_nodes)
+
+
+def single_run_compare():
     total_nodes = 10
     edge_probability = .5
     domain_size = 100
