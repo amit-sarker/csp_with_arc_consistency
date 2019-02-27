@@ -15,8 +15,8 @@ def random_domain(domain_size):
 
 def construct_graph(total_nodes, edge_probability, domain_size):
     graph = nx.erdos_renyi_graph(total_nodes, edge_probability)
-    #nx.draw(graph, with_labels=True)
-    #plt.show()
+    # nx.draw(graph, with_labels=True)
+    # plt.show()
 
     variables = []
     domains = {}

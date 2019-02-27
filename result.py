@@ -15,7 +15,7 @@ def get_result(domain_ac1, domain_ac2, domain_ac3, domain_ac4, constraints, tota
     print("After AC1   ", domain_ac1)
     print("Status:   ", is_consistent_ac1)
     end_ac1 = time.time()
-    elapsed_ac1 = (end_ac1 - start_ac1) * 1000
+    elapsed_ac1 = (end_ac1 - start_ac1)
     print("Elapsed time:   ", elapsed_ac1)
 
     start_ac2 = time.time()
@@ -26,7 +26,7 @@ def get_result(domain_ac1, domain_ac2, domain_ac3, domain_ac4, constraints, tota
     print("After AC2   ", domain_ac2)
     print("Status:   ", is_consistent_ac2)
     end_ac2 = time.time()
-    elapsed_ac2 = (end_ac2 - start_ac2) * 1000
+    elapsed_ac2 = (end_ac2 - start_ac2)
     print("Elapsed time:   ", elapsed_ac2)
 
     start_ac3 = time.time()
@@ -36,7 +36,7 @@ def get_result(domain_ac1, domain_ac2, domain_ac3, domain_ac4, constraints, tota
     print("After AC3   ", domain_ac3)
     print("Status:   ", is_consistent_ac3)
     end_ac3 = time.time()
-    elapsed_ac3 = (end_ac3 - start_ac3) * 1000
+    elapsed_ac3 = (end_ac3 - start_ac3)
     print("Elapsed time:   ", elapsed_ac3)
 
     print('\n')
@@ -47,7 +47,7 @@ def get_result(domain_ac1, domain_ac2, domain_ac3, domain_ac4, constraints, tota
     print("After AC4   ", domain_ac4)
     print("Status:   ", is_consistent_ac4)
     end_ac4 = time.time()
-    elapsed_ac4 = (end_ac4 - start_ac4) * 1000
+    elapsed_ac4 = (end_ac4 - start_ac4)
     print("Elapsed time:   ", elapsed_ac4)
     is_same = False
 
